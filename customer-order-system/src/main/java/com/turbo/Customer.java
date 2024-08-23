@@ -7,4 +7,11 @@ public class Customer extends AbstractClass {
         String sql = "INSERT INTO customers (name) VALUES (?)";
         create(sql, name);
     }
+
+    public void readCustomers() {
+        String sql = "SELECT * FROM customers";
+        read(sql, rs -> {
+            System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name"));
+        });
+    }
 }

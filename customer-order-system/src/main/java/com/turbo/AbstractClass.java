@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-
-import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
-
+import java.sql.ResultSet;
 
 //Abstract class that will connect to DB
 public abstract class AbstractClass {
@@ -32,15 +30,31 @@ public abstract class AbstractClass {
         }
     }
 
-    public void create(String sql, String name) {
-        try (Connection conn = getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    public void create(String sql, String name) { //abstract create method handles database connection
+        try (Connection conn = getConnection(); //open database connection
+            PreparedStatement pstmt = conn.prepareStatement(sql)) { //prepare the SQL statement
                 pstmt.setString(1, name);
-                pstmt.executeUpdate();
-                System.out.println("Successfully Created");
+                pstmt.executeUpdate(); //execute SQL statement
+                System.out.println("Successfully Created"); //output if successful
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage()); //output if error
+        }
+    }
+
+    public void read(String sql, ResultSetProcessor processor) { //abstract read method 
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) { //execute SQL and get result set
+            while (rs.next()) { //iterate over each row in rs
+                processor.process(rs); //process rs
+            }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
+    // Interface for processing ResultSet
+    public interface ResultSetProcessor {
+        void process(ResultSet rs) throws SQLException;
+    }
 }

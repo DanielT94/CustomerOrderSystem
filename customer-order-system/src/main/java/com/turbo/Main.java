@@ -4,7 +4,8 @@ public class Main {
     public static void main(String[] args) {
         Customer customer = new Customer();
 
-        customer.createCustomer("Daniel");
+        customer.createCustomer("Anna");
+        customer.readCustomers();
     }
 
 }
