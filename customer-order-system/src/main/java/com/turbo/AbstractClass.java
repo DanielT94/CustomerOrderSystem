@@ -57,4 +57,17 @@ public abstract class AbstractClass {
     public interface ResultSetProcessor {
         void process(ResultSet rs) throws SQLException;
     }
+
+    public void update(String sql, Object... params) { //abstract update method
+        try (Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) { //runs through each parameter passed in to update
+                pstmt.setObject(i + 1, params[i]); //set each parameter in SQL query
+            }
+            int rowsAffected = pstmt.executeUpdate(); //executes SQL query
+            System.out.println("Rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }

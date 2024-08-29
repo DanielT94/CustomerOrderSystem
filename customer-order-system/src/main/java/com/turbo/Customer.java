@@ -14,4 +14,9 @@ public class Customer extends AbstractClass {
             System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name"));
         });
     }
+
+    public void updateCustomerName (int id, String newName) {
+        String sql = "UPDATE customers SET name = ? WHERE id = ?";
+        update(sql, newName, id);
+    }
 }
