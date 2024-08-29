@@ -5,7 +5,7 @@ public class Main {
         Customer customer = new Customer();
 
         customer.readCustomers();
-        customer.updateCustomerName(1, "Jack");
+        customer.deleteCustomer(1);
         customer.readCustomers();
     }
 

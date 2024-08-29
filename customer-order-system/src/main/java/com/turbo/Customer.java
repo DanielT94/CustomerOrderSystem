@@ -19,4 +19,9 @@ public class Customer extends AbstractClass {
         String sql = "UPDATE customers SET name = ? WHERE id = ?";
         update(sql, newName, id);
     }
+
+    public void deleteCustomer (int id) {
+        String sql = "DELETE FROM customers WHERE id = ?";
+        delete(sql, id);
+    }
 }

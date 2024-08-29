@@ -3,6 +3,9 @@ package com.turbo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.turbo.AbstractClass.ResultSetProcessor;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -68,6 +71,17 @@ public abstract class AbstractClass {
             System.out.println("Rows affected: " + rowsAffected);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void delete(String sql, int id) { // abstract delete method
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {            
+            pstmt.setInt(1, id); // set the ? in the SQL statement to the ID value          
+            int rowsAffected = pstmt.executeUpdate(); // execute the delete command
+            System.out.println("Delete successful, rows affected: " + rowsAffected);           
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage()); // log SQL exceptions
         }
     }
 }
