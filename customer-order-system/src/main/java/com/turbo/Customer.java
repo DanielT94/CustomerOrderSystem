@@ -11,7 +11,7 @@ public class Customer extends AbstractClass {
     public void readCustomers() {
         String sql = "SELECT * FROM customers";
         read(sql, rs -> {
-            System.out.println("ID: " + rs.getInt("id") + ", Name: " + rs.getString("name"));
+            System.out.println("Customer ID: " + rs.getInt("id") + ", Name: " + rs.getString("name"));
         });
     }
 

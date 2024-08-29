@@ -33,10 +33,18 @@ public abstract class AbstractClass {
         }
     }
 
-    public void create(String sql, String name) { //abstract create method handles database connection
+    public void create(String sql, Object... params) { //abstract create method handles database connection
         try (Connection conn = getConnection(); //open database connection
             PreparedStatement pstmt = conn.prepareStatement(sql)) { //prepare the SQL statement
-                pstmt.setString(1, name);
+                for (int i = 0; i < params.length; i++) {
+                    if (params[i] instanceof String) { //if string then use this
+                        pstmt.setString(i + 1, (String) params[i]);
+                    } else if (params[i] instanceof Double) { //if double use this
+                        pstmt.setDouble(i + 1, (Double) params[i]);
+                    } else if (params[i] instanceof Integer) { //if integer use this
+                        pstmt.setInt(i + 1, (Integer) params[i]);
+                    }    
+                }
                 pstmt.executeUpdate(); //execute SQL statement
                 System.out.println("Successfully Created"); //output if successful
         } catch (SQLException e) {
@@ -74,10 +82,12 @@ public abstract class AbstractClass {
         }
     }
 
-    public void delete(String sql, int id) { // abstract delete method
+    public void delete(String sql, int... params) { // abstract delete method
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {            
-            pstmt.setInt(1, id); // set the ? in the SQL statement to the ID value          
+            for (int i = 0; i < params.length; i++) {
+                pstmt.setInt(i + 1, params[i]);
+            }
             int rowsAffected = pstmt.executeUpdate(); // execute the delete command
             System.out.println("Delete successful, rows affected: " + rowsAffected);           
         } catch (SQLException e) {
